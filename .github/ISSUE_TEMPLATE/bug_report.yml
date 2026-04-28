@@ -1,0 +1,73 @@
+name: Bug report
+description: The skill produced a bad output, errored out, or behaved unexpectedly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the bug report. The most useful issues include enough context to reproduce — please anonymize any PII before sharing.
+
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Which skill?
+      options:
+        - career-profile-builder
+        - resume-tailor
+        - both / spans both
+        - not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: |
+        e.g., "The ATS pass missed a word-order issue between 'machine learning' and 'ML'."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: input
+    attributes:
+      label: Inputs (anonymized)
+      description: |
+        The JD (or a sanitized version) and the relevant section of your career_profile.md, if applicable.
+        Please remove names, employers, and any PII. We don't need real data — we need the structure.
+      render: markdown
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output (anonymized)
+      description: What the skill produced.
+      render: markdown
+
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude version / interface
+      description: e.g., "Claude Code v1.x", "Claude.ai web", "Claude Sonnet 4.7 via API"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deps
+    attributes:
+      label: Optional deps installed?
+      multiple: true
+      options:
+        - pandoc
+        - Chrome / Chromium
+        - pdfinfo (poppler)
+        - git
+        - none of the above

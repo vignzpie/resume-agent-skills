@@ -1,0 +1,30 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.0] - 2026-04-28
+
+### Added
+
+- Initial release of two skills:
+  - `career-profile-builder` — structured interview that adapts to experience level (5 buckets) and career track (engineering, EM, PM, design, DS/ML, marketing, sales, ops, academia, other). Outputs a 19-section `career_profile.md`.
+  - `resume-tailor` — 9-phase workflow: JD ingest → gap scorecard → targeted discovery → drafting → ATS optimization → rendering → compression → versioning → handoff. Reads `career_profile.md` as source-of-truth.
+- `references/branching-questions.md` — track-by-track interview question bank.
+- `references/profile-template.md` — canonical 19-section profile structure.
+- `references/ats-detection.md` — ATS-family detection (Workday, Greenhouse, Lever, Taleo, iCIMS, SmartRecruiters, Workable) and per-family conventions.
+- `references/bullet-patterns.md` — bullet shapes (Action→System→Outcome, Problem→Decision→Result, Scope→Body→Recognition), verb selection, quantification rules.
+- `assets/resume.css` — 2-page-friendly print stylesheet with optional `.tight` mode.
+- `scripts/render.sh` — markdown → html → docx → pdf pipeline with graceful degradation across pandoc, Chrome, and pdf-engine fallbacks.
+
+### Notes
+
+- Skills are zero-dependency markdown by default; `pandoc`, Chrome/Chromium, `pdfinfo`, and `git` are optional. Skills detect what's installed and tell the user what's missing.
+- Built from the patterns observed in a real 4-hour resume-tailoring session (April 2026 — Proofpoint R13927). See `docs/PROVENANCE.md` for the source recap.
+
+[Unreleased]: https://github.com/vignzpie/resume-skills-for-claude/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/vignzpie/resume-skills-for-claude/releases/tag/v0.1.0

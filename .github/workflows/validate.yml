@@ -1,0 +1,73 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          python <<'EOF'
+          import sys
+          from pathlib import Path
+          import re
+
+          errors = []
+          skill_files = list(Path(".").rglob("SKILL.md"))
+          if not skill_files:
+              print("No SKILL.md files found.")
+              sys.exit(1)
+
+          for sf in skill_files:
+              text = sf.read_text()
+              if not text.startswith("---"):
+                  errors.append(f"{sf}: missing frontmatter (must start with '---')")
+                  continue
+              try:
+                  _, fm, _ = text.split("---", 2)
+              except ValueError:
+                  errors.append(f"{sf}: malformed frontmatter (could not split on '---')")
+                  continue
+              if not re.search(r"^name:\s*\S", fm, re.MULTILINE):
+                  errors.append(f"{sf}: frontmatter missing 'name' field")
+              if not re.search(r"^description:\s*\S", fm, re.MULTILINE):
+                  errors.append(f"{sf}: frontmatter missing 'description' field")
+              # Heuristic: description should be reasonably long for triggering accuracy
+              desc_match = re.search(r"^description:\s*(.+)$", fm, re.MULTILINE)
+              if desc_match and len(desc_match.group(1)) < 50:
+                  errors.append(f"{sf}: description is short ({len(desc_match.group(1))} chars) — consider expanding for better trigger accuracy")
+              print(f"✓ {sf}")
+
+          if errors:
+              print("\nValidation errors:")
+              for e in errors:
+                  print(f"  ✗ {e}")
+              sys.exit(1)
+          else:
+              print(f"\nAll {len(skill_files)} SKILL.md files valid.")
+          EOF
+
+      - name: Check render.sh is executable
+        run: |
+          if [[ ! -x resume-tailor/scripts/render.sh ]]; then
+            echo "render.sh is not executable"
+            exit 1
+          fi
+          echo "✓ render.sh is executable"
+
+      - name: Lint render.sh with shellcheck
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck -S warning resume-tailor/scripts/render.sh

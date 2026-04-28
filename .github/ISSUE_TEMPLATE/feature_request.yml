@@ -1,0 +1,54 @@
+name: Feature request
+description: Suggest a new capability, track, ATS, or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Please skim CONTRIBUTING.md for the kinds of additions that fit best — especially new track question banks, ATS detection, and render-pipeline alternatives.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of feature?
+      options:
+        - New career track in branching-questions.md
+        - New ATS in ats-detection.md
+        - New render fallback in render.sh
+        - New skill (cover letter, LinkedIn, interview prep, etc.)
+        - Improvement to existing skill
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Tell us about the use case. Why does this matter? What's the user trying to do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What would you build? Rough sketch is fine.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other ways to solve the same problem.
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Are you offering to build this?
+      options:
+        - label: Yes, I plan to open a PR
+        - label: I can help review a PR but probably won't write it
+        - label: Just suggesting the idea

@@ -1,0 +1,151 @@
+/* resume.css — print-friendly default stylesheet for resume rendering.
+ *
+ * Designed to fit a typical 2-page resume on US Letter (8.5" x 11").
+ * Tight but readable. Single column. ATS-friendly: real headings, no images,
+ * no tables in body, real bullet characters.
+ *
+ * Adjust margins, font sizes, or line-height to compress further if the
+ * resume runs long.
+ */
+
+@page {
+  size: letter;
+  margin: 0.5in 0.6in;
+}
+
+html, body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.35;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  max-width: 7.3in;
+  margin: 0 auto;
+}
+
+/* Name / header */
+h1 {
+  font-size: 20pt;
+  font-weight: 700;
+  margin: 0 0 2pt 0;
+  letter-spacing: -0.3pt;
+}
+
+/* Headline directly under name (no h-tag — typically a paragraph or em line) */
+h1 + p,
+h1 + em {
+  font-size: 11pt;
+  color: #4a4a4a;
+  margin: 0 0 4pt 0;
+}
+
+/* Section headings: Summary, Skills, Experience, Education, etc. */
+h2 {
+  font-size: 11.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6pt;
+  border-bottom: 1pt solid #1a1a1a;
+  margin: 10pt 0 4pt 0;
+  padding-bottom: 1pt;
+}
+
+/* Role / company headers inside Experience */
+h3 {
+  font-size: 11pt;
+  font-weight: 700;
+  margin: 6pt 0 1pt 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* If h3 contains the company on left and dates on right via a span */
+h3 .meta {
+  font-weight: 400;
+  font-style: italic;
+  color: #5a5a5a;
+  font-size: 10pt;
+}
+
+/* Body paragraphs (used for contact line, summary) */
+p {
+  margin: 2pt 0;
+}
+
+/* Bullet lists */
+ul {
+  list-style-type: disc;
+  margin: 2pt 0 4pt 0;
+  padding-left: 16pt;
+}
+
+li {
+  margin: 1pt 0;
+}
+
+/* Skills section often uses bold inline labels — make them legible */
+strong {
+  font-weight: 600;
+}
+
+/* Inline code (for technologies) — light styling only */
+code {
+  font-family: "Menlo", "Consolas", "Liberation Mono", monospace;
+  font-size: 9.5pt;
+  background-color: #f4f4f4;
+  padding: 0 2pt;
+  border-radius: 2pt;
+}
+
+/* Hyperlinks — visible but not loud */
+a {
+  color: #1a4480;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Tables (used sparingly — Education, Certifications) */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 2pt 0;
+}
+
+th, td {
+  text-align: left;
+  padding: 1pt 4pt;
+  font-size: 10pt;
+  vertical-align: top;
+}
+
+/* Horizontal rules — used between major sections if present */
+hr {
+  border: none;
+  border-top: 0.5pt solid #cccccc;
+  margin: 4pt 0;
+}
+
+/* Print adjustments — remove screen-only chrome */
+@media print {
+  body { max-width: none; }
+  a { color: inherit; }
+}
+
+/* Tighter mode — apply by adding class="tight" to <body> if compression needed */
+body.tight {
+  font-size: 10pt;
+  line-height: 1.25;
+}
+
+body.tight h1 { font-size: 18pt; }
+body.tight h2 { font-size: 11pt; margin: 8pt 0 3pt 0; }
+body.tight h3 { font-size: 10.5pt; margin: 5pt 0 1pt 0; }
+body.tight ul { padding-left: 14pt; margin: 2pt 0 3pt 0; }
