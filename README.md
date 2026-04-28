@@ -1,4 +1,4 @@
-# Resume Skills for Claude
+# Resume Agent Skills
 
 > **Not another resume builder.** Most resume tools rewrite the same surface every time you apply for a job. This one builds a deep career profile once — your achievements, scope, framings, and gaps — then tailors fast resumes from it for every future job. The profile is the asset. Resumes are disposable derivatives.
 
@@ -33,13 +33,16 @@ The compounding effect: each tailoring session writes its targeted-discovery ans
 
 ```bash
 # Clone the repo
-git clone https://github.com/vignzpie/resume-skills-for-claude.git
-cd resume-skills-for-claude
+git clone https://github.com/vignzpie/resume-agent-skills.git
+cd resume-agent-skills
 
 # Drop into your Claude skills directory
 cp -r career-profile-builder ~/.claude/skills/
 cp -r resume-tailor ~/.claude/skills/
 ```
+
+> For Claude.ai, Codex, Cursor, Gemini CLI, or other Agent-Skills–compatible
+> tools, see [Compatibility](#compatibility) below for tool-specific install steps.
 
 Then in Claude Code or Claude.ai:
 

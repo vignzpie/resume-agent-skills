@@ -4,7 +4,7 @@ These are the settings to apply manually in the GitHub repo's "About" panel and 
 
 ## Repo name
 
-Recommended: **`resume-skills-for-claude`**
+Recommended: **`resume-agent-skills`**
 
 Why this name:
 - Includes the primary keyword (`resume-skills`) for the use case
@@ -20,7 +20,7 @@ Set this in the "About" panel (gear icon at the top right of the repo).
 
 Recommended (under 150 chars):
 
-> 📄 Two Claude skills that build a deep career profile once, then tailor ATS-ready resumes from it for every job application. Profile compounds.
+> 📄 Two agent skills that build a deep career profile once, then tailor ATS-ready resumes from it for every job application. Profile compounds.
 
 Why this works:
 - Lead with an emoji (📄) — proven to increase click-through on GitHub search results
@@ -29,8 +29,8 @@ Why this works:
 - Under 150 chars — full description shows in search results and social embeds
 
 Alternative phrasings if you want to test:
-- "📄 Build a deep career profile once, tailor ATS-ready resumes from it forever. Two Claude skills that compound across job applications."
-- "🎯 Resume tailoring done right: build a 19-section career profile once, generate ATS-optimized resumes for any JD in 15 minutes. Claude skills."
+- "📄 Build a deep career profile once, tailor ATS-ready resumes from it forever. Two agent skills that compound across job applications."
+- "🎯 Resume tailoring done right: build a 19-section career profile once, generate ATS-optimized resumes for any JD in 15 minutes. Agent skills."
 
 ## Topics (tags)
 

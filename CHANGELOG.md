@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Notes
 
 - Skills are zero-dependency markdown by default; `pandoc`, Chrome/Chromium, `pdfinfo`, and `git` are optional. Skills detect what's installed and tell the user what's missing.
-- Built from the patterns observed in a real 4-hour resume-tailoring session (April 2026 — Proofpoint R13927). See `docs/PROVENANCE.md` for the source recap.
+- Built from the patterns observed in a real 4-hour resume-tailoring session (April 2026). See `docs/PROVENANCE.md` for the source recap.
 
-[Unreleased]: https://github.com/vignzpie/resume-skills-for-claude/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/vignzpie/resume-skills-for-claude/releases/tag/v0.1.0
+[Unreleased]: https://github.com/vignzpie/resume-agent-skills/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/vignzpie/resume-agent-skills/releases/tag/v0.1.0
