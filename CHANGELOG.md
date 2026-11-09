@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Agent Skills spec fields in both `SKILL.md` frontmatters: `license`, `compatibility` (states what each skill needs, e.g. that `resume-tailor` is built for Claude Code-style agents with local file access) and `metadata` (author, version).
+- A **Gotchas** section in both skills, drawn from a real tailoring session: profile location, never saving personal data into a code repo, checking render tools up front, PDF fallbacks, JD boilerplate, ATS misses without evidence, the user's own vocabulary, and resume variants.
+- `evals/evals.json` for both skills in the [Agent Skills eval format](https://agentskills.io/skill-creation/evaluating-skills), with fictional fixtures under `evals/files/`.
+- CI runs the official `skills-ref validate` (pinned) and checks that the eval files parse.
+
 ### Fixed
 
 - `render.sh`: without pandoc it no longer stops at `.md`. It now builds the `.html` with python3 (python-markdown if installed, else a built-in converter for the resume subset of markdown, CSS embedded), so Chrome/Chromium can still produce the `.pdf`. Previously, a machine with Chrome but no pandoc got nothing printable, despite what `resume-tailor/SKILL.md` described.

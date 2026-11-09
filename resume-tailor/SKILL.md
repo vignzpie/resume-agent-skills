@@ -1,6 +1,11 @@
 ---
 name: resume-tailor
 description: Tailor a resume to a specific job description using the user's career_profile.md as the source of truth. Use this skill whenever the user wants to apply for a job, customize their resume, "make my resume fit this JD", "tailor for this role", "ATS-optimize", or asks for a resume targeting a specific company / requisition / posting. Also use when the user shares a job description (pasted, file, or URL) and asks what to do with it. Produces a markdown draft, runs an ATS keyword pass, renders to .docx and .pdf where possible, and offers to commit the result to git. Requires career_profile.md to exist — if it doesn't, hand off to career-profile-builder first.
+license: MIT
+compatibility: Built for Claude Code or similar agents with local file access, run from the folder that holds the job description. Reads career_profile.md from disk. Optional local tools - pandoc (.docx), python3 (.html without pandoc), Chrome or Chromium (.pdf), pdfinfo (page count), git (versioning).
+metadata:
+  author: vignzpie
+  version: "0.1.0"
 ---
 
 # Resume Tailor
@@ -208,6 +213,20 @@ If the user mentions any final tweaks they want to make in Word, capture those a
 If the user provides multiple JDs in one session ("tailor for these 3 roles"), do Phase 1-2 across all of them in a single comparison pass first — this surfaces the *common* must-haves (keywords to plant in every version) and the *role-specific* must-haves (the differentiators). Then do Phases 3-9 per JD.
 
 The user gets one set of files per JD: `resume_<JD-ID-1>.{md,docx,pdf}`, `resume_<JD-ID-2>.{md,docx,pdf}`, etc.
+
+## Gotchas
+
+These came up in real tailoring sessions. Each one is a mistake an agent will make unless told otherwise.
+
+- **The profile is often not in the current directory.** Look in the working directory, the JD's folder and its parents, and `~/career_profile.md`, then ask. Don't conclude "no profile" from the working directory alone.
+- **Never save personal data into an unrelated git repo.** If the working directory is a code repo (check `git remote -v`), ask where the job folder is instead. A resume committed to a public repo can't be fully taken back.
+- **A pasted JD has no folder.** Before Phase 1, offer to save it as a file in a job folder (default `~/jobs/<company>/`) so outputs have a home.
+- **Check render tools before Phase 1, not at Phase 6.** Run `command -v pandoc python3 chromium google-chrome` and tell the user what they'll get. Finding out at the end, under a deadline, is the worst time.
+- **Resumes often arrive as PDFs your file reader can't open.** Try `pdftotext`, then Python `pypdf`, then ask the user to paste the text.
+- **JDs contain copied boilerplate.** A line that contradicts the role (a backend JD ending "passionate about designing exceptional user experiences") is noise. Don't extract keywords from it.
+- **An ATS miss without profile evidence is a gap, not a patch.** Report it to the user; never plant a keyword the profile can't back.
+- **The user's own vocabulary beats the JD's.** Before rendering, show the proposed bullets and ask whether there are terms they use for their work (a methodology, a role they grew into) that are missing. Users judge the result by whether it sounds like them.
+- **Section 19 framings keep their words, not necessarily their grammatical person.** Adjust "drives" to "drive" to match bullet voice; don't change the substance.
 
 ## Invariants
 

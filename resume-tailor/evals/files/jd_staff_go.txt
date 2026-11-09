@@ -1,0 +1,16 @@
+Lumenpay: Staff Backend Engineer (Go). Req ID: R20431
+Bengaluru / Remote (India)
+
+You will design and build high-throughput payment services in Go, own API design (gRPC preferred), and lead technical direction across teams.
+
+Requirements
+- 7+ years building backend systems; 3+ years in Go
+- gRPC and REST API design
+- Distributed systems: idempotency, retries, consistency
+- Kafka in production, including operating clusters
+- Mentoring engineers
+- Experience with PCI-DSS environments
+
+Nice to have
+- Rust
+- Conference talks or open-source contributions

@@ -59,6 +59,19 @@ jobs:
               print(f"\nAll {len(skill_files)} SKILL.md files valid.")
           EOF
 
+      - name: Validate skills against the Agent Skills spec (skills-ref)
+        run: |
+          # Pinned to a commit: skills-ref isn't on PyPI and is a demo library
+          pip install "git+https://github.com/agentskills/agentskills.git@83021e2be457a9b6679148719c1f6074f0ad975e#subdirectory=skills-ref"
+          skills-ref validate career-profile-builder
+          skills-ref validate resume-tailor
+
+      - name: Check evals.json files parse
+        run: |
+          for f in */evals/evals.json; do
+            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f" && echo "✓ $f"
+          done
+
       - name: Check render.sh is executable
         run: |
           if [[ ! -x resume-tailor/scripts/render.sh ]]; then
