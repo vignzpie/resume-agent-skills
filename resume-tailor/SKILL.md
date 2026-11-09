@@ -159,9 +159,9 @@ Convert the markdown to .html, .docx, and .pdf. The strategy degrades gracefully
        │   else if pandoc has --pdf-engine: pandoc → resume_<JD-ID>.pdf
        │   else: skip pdf, tell user
        │
-       └── if no pandoc: write resume_<JD-ID>.html with embedded CSS
-                          tell user: "install pandoc for .docx, or open
-                          the .html and print-to-pdf in a browser"
+       └── if no pandoc: python3 → resume_<JD-ID>.html with embedded CSS
+                          (then Chrome → .pdf as above)
+                          tell user: "install pandoc for .docx"
 ```
 
 The render details (exact pandoc invocations, CSS file, Chrome headless flags) are in `scripts/render.sh`. Use that script — don't reinvent.

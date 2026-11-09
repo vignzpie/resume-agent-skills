@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `render.sh`: without pandoc it no longer stops at `.md`. It now builds the `.html` with python3 (python-markdown if installed, else a built-in converter for the resume subset of markdown, CSS embedded), so Chrome/Chromium can still produce the `.pdf`. Previously, a machine with Chrome but no pandoc got nothing printable, despite what `resume-tailor/SKILL.md` described.
+
 ## [0.1.0] - 2026-04-28
 
 ### Added

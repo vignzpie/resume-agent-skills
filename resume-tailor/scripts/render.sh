@@ -2,8 +2,11 @@
 # render.sh — convert resume_<JD-ID>.md to .html, .docx, .pdf
 #
 # Strategy: degrade gracefully. Always emit .md (it's the source). Try pandoc
-# for .docx and .html. Try Chrome / Chromium headless for .pdf, fall back to
-# pandoc's pdf-engine if available, otherwise skip .pdf and tell the user.
+# for .docx and .html. Without pandoc, build the .html with python3 instead
+# (python-markdown if installed, else a built-in converter for the resume
+# subset of markdown), so a PDF is still possible. Try Chrome / Chromium
+# headless for .pdf, fall back to pandoc's pdf-engine if available, otherwise
+# skip .pdf and tell the user.
 #
 # Usage:
 #   render.sh <input.md> [output-dir] [css-path]
@@ -35,6 +38,91 @@ mkdir -p "$OUTPUT_DIR"
 declare -a EMITTED=("$INPUT")
 declare -a SKIPPED=()
 
+# --- HTML fallback when pandoc is missing ---
+# Uses python-markdown if installed, otherwise a minimal built-in converter
+# covering what resumes use: headings, bullet lists, paragraphs, **bold**,
+# *italic*, `code` and [links](url). CSS is embedded so the file is portable.
+render_html_without_pandoc() {
+    python3 - "$INPUT" "$CSS_PATH" "$HTML_OUT" <<'PY'
+import html
+import re
+import sys
+from pathlib import Path
+
+src, css_path, out = sys.argv[1:4]
+text = Path(src).read_text(encoding="utf-8")
+css = Path(css_path).read_text(encoding="utf-8") if Path(css_path).is_file() else ""
+
+
+def inline(s):
+    s = html.escape(s, quote=False)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", s)
+    s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", r'<a href="\2">\1</a>', s)
+    return s
+
+
+def convert(md):
+    out_lines, para, in_list = [], [], False
+
+    def flush_para():
+        if para:
+            out_lines.append("<p>" + inline(" ".join(para)) + "</p>")
+            para.clear()
+
+    def close_list():
+        nonlocal in_list
+        if in_list:
+            out_lines.append("</ul>")
+            in_list = False
+
+    for raw in md.splitlines():
+        line = raw.rstrip()
+        heading = re.match(r"^(#{1,6})\s+(.*)$", line)
+        item = re.match(r"^\s*[-*+]\s+(.*)$", line)
+        if not line.strip():
+            flush_para()
+            close_list()
+        elif heading:
+            flush_para()
+            close_list()
+            level = len(heading.group(1))
+            out_lines.append(f"<h{level}>{inline(heading.group(2))}</h{level}>")
+        elif item:
+            flush_para()
+            if not in_list:
+                out_lines.append("<ul>")
+                in_list = True
+            out_lines.append("<li>" + inline(item.group(1)) + "</li>")
+        elif in_list and raw.startswith((" ", "\t")):
+            # Continuation of the previous list item
+            out_lines[-1] = out_lines[-1][: -len("</li>")] + " " + inline(line.strip()) + "</li>"
+        else:
+            close_list()
+            para.append(line.strip())
+    flush_para()
+    close_list()
+    return "\n".join(out_lines)
+
+
+try:
+    import markdown  # optional: python-markdown
+
+    body = markdown.markdown(text)
+except ImportError:
+    body = convert(text)
+
+title_match = re.search(r"^#\s+(.+)$", text, re.MULTILINE)
+title = html.escape(title_match.group(1).strip()) if title_match else "Resume"
+Path(out).write_text(
+    "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
+    f"<title>{title}</title>\n<style>\n{css}\n</style>\n</head>\n<body>\n{body}\n</body>\n</html>\n",
+    encoding="utf-8",
+)
+PY
+}
+
 # --- Step 1: pandoc-based outputs (.html, .docx) ---
 if command -v pandoc >/dev/null 2>&1; then
     # HTML with embedded CSS for portability
@@ -57,8 +145,14 @@ if command -v pandoc >/dev/null 2>&1; then
         && EMITTED+=("$DOCX_OUT") \
         || SKIPPED+=("$DOCX_OUT (pandoc docx failed)")
 else
-    SKIPPED+=("$HTML_OUT (pandoc not installed)")
     SKIPPED+=("$DOCX_OUT (pandoc not installed)")
+    if command -v python3 >/dev/null 2>&1; then
+        render_html_without_pandoc \
+            && EMITTED+=("$HTML_OUT") \
+            || SKIPPED+=("$HTML_OUT (python3 html fallback failed)")
+    else
+        SKIPPED+=("$HTML_OUT (neither pandoc nor python3 installed)")
+    fi
 fi
 
 # --- Step 2: PDF — prefer Chrome headless from HTML ---
