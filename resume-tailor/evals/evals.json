@@ -1,0 +1,41 @@
+{
+  "skill_name": "resume-tailor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Tailor my resume for this job: evals/files/jd_staff_go.txt. My profile is evals/files/profile_asha.md.",
+      "expected_output": "A resume_R20431.md that plants Go, gRPC and idempotency up front, uses only profile facts, respects the PCI framing, and reports Kafka-operations and Rust as gaps instead of claiming them.",
+      "files": ["evals/files/profile_asha.md", "evals/files/jd_staff_go.txt"],
+      "assertions": [
+        "The output file is named resume_R20431.md",
+        "The summary or first bullet of the PayLoop role mentions Go and gRPC",
+        "The PCI wording matches the Section 19 framing ('partnered with security on PCI-DSS scope reduction') and never says 'led PCI compliance' or 'certified'",
+        "The resume does not claim Rust experience",
+        "The resume does not claim operating or tuning Kafka clusters",
+        "Every number in the resume (3,000 rps, 14 banks, 180ms, 70ms, 2 engineers) appears in the profile",
+        "The agent reports Kafka operations and Rust as gaps to the user"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "hey can you make my resume fit this posting? its in evals/files/jd_staff_go.txt",
+      "expected_output": "The agent looks for career_profile.md beyond the working directory (JD folder, parents, home) and asks before concluding there is no profile; it does not start a full profile interview inside the tailoring session.",
+      "files": ["evals/files/jd_staff_go.txt"],
+      "assertions": [
+        "The agent searches for career_profile.md in at least one location other than the working directory, or asks the user where it is",
+        "The agent does not fabricate a resume without a profile",
+        "If no profile is found, the agent points the user to career-profile-builder"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use my profile at evals/files/profile_asha.md and tailor for this: evals/files/jd_vague.txt",
+      "expected_output": "The agent notices the JD has no requirements, asks one clarifying question about the role, and does not invent requirements.",
+      "files": ["evals/files/profile_asha.md", "evals/files/jd_vague.txt"],
+      "assertions": [
+        "The agent asks the user what the role is actually about before drafting",
+        "The agent does not list requirements that are not in the JD"
+      ]
+    }
+  ]
+}

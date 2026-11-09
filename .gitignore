@@ -34,7 +34,7 @@ node_modules/
 
 # Skill-creator workspace artifacts (if anyone runs evals locally)
 *-workspace/
-evals/
+# (eval results go in *-workspace/ above; evals/ itself holds test cases and is tracked)
 
 # User-generated content that shouldn't end up in the repo
 career_profile.md

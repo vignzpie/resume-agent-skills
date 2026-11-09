@@ -59,6 +59,8 @@ examples/<short-name>/
 
 A handful of these covering different tracks and seniority levels makes the skill verifiably better over time.
 
+Even more useful: turn a case into an eval. Each skill has an `evals/evals.json` in the [Agent Skills eval format](https://agentskills.io/skill-creation/evaluating-skills): a realistic prompt, the expected output, any input files (under `evals/files/`, fictional or anonymized) and checkable assertions. Add a case there, especially one where the skill currently gets it wrong.
+
 ### 5. Bug reports for failure modes
 
 If the skill produces a bad output, file an issue. Useful issues include:

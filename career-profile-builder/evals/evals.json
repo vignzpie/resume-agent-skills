@@ -1,0 +1,28 @@
+{
+  "skill_name": "career-profile-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've got two versions of my resume, evals/files/cv_ic.md and evals/files/cv_em.md. Build my career profile from them, I need it for applications this week.",
+      "expected_output": "The agent pre-fills from both resumes, then asks about each conflict between them (team size 6 vs 4+2, 'designed and led' vs 'co-owned', title, the 35% latency figure) before writing them into the profile. It doesn't silently pick one.",
+      "files": ["evals/files/cv_ic.md", "evals/files/cv_em.md"],
+      "assertions": [
+        "The agent asks about the team-size conflict (6 engineers vs 4 direct reports + 2 contractors)",
+        "The agent asks about the ownership conflict ('designed and led' vs 'co-owned')",
+        "The agent does not write the 35% latency figure as confirmed without asking",
+        "The agent asks the Section 18 and Section 19 questions (things uncomfortable to claim, approved framings)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Help me build my resume from scratch. I'm a backend engineer with about 9 years of experience.",
+      "expected_output": "The agent runs triage, asks where to save career_profile.md (not defaulting into a code repo), and includes a question about work outside the day job (side projects, tooling, open source).",
+      "files": [],
+      "assertions": [
+        "The agent asks or confirms where career_profile.md will be saved",
+        "The agent asks about side projects, personal tooling, or open-source work",
+        "The agent does not invent metrics the user did not give"
+      ]
+    }
+  ]
+}

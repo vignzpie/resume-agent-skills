@@ -1,6 +1,11 @@
 ---
 name: career-profile-builder
 description: Build a comprehensive career profile (career_profile.md) through a structured interview that adapts to the user's experience level and career track. Use this skill whenever the user wants to "build a resume from scratch", "start fresh", "create my professional profile", "I don't have a resume yet", or when the resume-tailor skill needs a profile and none exists. Also use when the user wants to refresh, expand, or update their existing career_profile.md after a job change, promotion, new project, or new skill. The output is a reusable source-of-truth that the resume-tailor skill consumes for every future job application — so it should be thorough and honest, not surface-level.
+license: MIT
+compatibility: Works in any Agent Skills client. Saving career_profile.md needs local file access (Claude Code or similar). Reading PDF resumes needs pdftotext or python3 with pypdf, or the user can paste the text.
+metadata:
+  author: vignzpie
+  version: "0.1.0"
 ---
 
 # Career Profile Builder
@@ -128,6 +133,17 @@ For the full set of branching questions per track and per level, read `reference
 Year-count is one axis; track is the other. The branching questions are organized by track because a senior PM and a senior SWE have completely different bullet vocabularies. The triage step picks the track. If the user is hybrid (e.g., engineering manager), ask them which track's vocabulary their target role uses and lead with that, then layer in the other.
 
 If the user's track isn't listed in the branching-questions reference, fall back to the generic deep-dive prompts and let the user's domain language guide the follow-ups. Don't pretend you know an industry you don't.
+
+## Gotchas
+
+These came up in real profile-building sessions.
+
+- **Don't default to the working directory if it's a code repo.** Check `git remote -v`; the profile is personal data. Suggest a stable home such as `~/career_profile.md` or the user's jobs folder, and tell `resume-tailor` users where it is.
+- **Users often bring several resume variants** (e.g., an IC version and a manager version). Compare their claims and ask about every conflict: headcounts, dates, and ownership verbs ("designed and led" vs. "jointly own") are the usual ones.
+- **People under-report what they built outside the day job.** Ask directly about side projects, personal tooling, open source and writing. For some users this is the strongest material in the profile.
+- **Capture the user's own words and stories, not just facts.** Ask what they call the way they work (a methodology, an informal role) and how they got there. Tailored resumes that miss these feel generic to the user even when every fact is right.
+- **Users may hand you documents mid-interview** (a write-up, a performance review, a blog post). Read them and fold the evidence into the right sections, marking anything unconfirmed for Section 18.
+- **Under a deadline, run the short version.** Pre-fill from the resume, ask only the questions the target role needs plus the two Section 18/19 questions, save, and deepen the profile later.
 
 ## Invariants
 
